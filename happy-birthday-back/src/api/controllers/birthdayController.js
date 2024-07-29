@@ -10,6 +10,6 @@ exports.getTodaysBirthday = async (req, res) => {
     res.json({
         count_total: result.length,
         students_birthday : result,
-        teachers_birthday : result
+        teachers_birthday : []
     })
 }

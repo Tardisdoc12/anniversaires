@@ -8,6 +8,7 @@ import ConvertComponent from './ConvertComponent/Convert';
 import ConvertQuoteComponent from './QuoteConvertComponent/QuoteConvertComponent';
 
 import { getTodaysBirthday } from '../services/birthdayApiService';
+import AddBirthdayForm from './addingBirthdayComponent/addingBirthday';
 
 function App() {
   const colorsList = [
@@ -91,6 +92,7 @@ function App() {
         }/>
     <Route path="/convert" element={<ConvertComponent />} />
     <Route path="/convert-quote" element={<ConvertQuoteComponent />} />
+    <Route path="/add-birthday" element={<AddBirthdayForm />} />
     </Routes>
     </Router>
   );

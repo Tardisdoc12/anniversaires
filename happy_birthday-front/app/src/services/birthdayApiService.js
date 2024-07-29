@@ -9,6 +9,21 @@ export const getTodaysBirthday = async () => {
   }
 };
 
+export const addBirthday = async (firstname,lastname,birthdate,email) => {
+  try{
+    return await (await fetch('http://localhost:3002/addBirthday', {
+      method : "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({'birthday' : birthdate, 'firstname':firstname,'lastname':lastname,'email':email}),
+    },
+    )).json()
+  }catch(err){
+    return false
+  }
+}
+
 export const getRandomQuote = async () => {
   let queryUrl = `http://localhost:3002/getQuote`;
 
