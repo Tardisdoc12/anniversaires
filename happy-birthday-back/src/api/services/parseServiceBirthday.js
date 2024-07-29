@@ -14,13 +14,14 @@ exports.parseServiceBirthday = (birthdate) => {
     let results = [];
 
     return new Promise(async (resolve, reject) => {
+        let conn;
         try{
-            const conn = await pool.getConnection();
-            data = await conn.query("SELECT name, lastname FROM Anniversaries WHERE SUBSTRING(birthday, 1, 5) = ?",[birthdate])
-            results.push(data)
-            return results;
+            
+            conn = await pool.getConnection();
+            data = await conn.query("SELECT * FROM Anniversaries WHERE SUBSTRING(birthday, 1, 5) = ?",[birthdate])
+            resolve(data);
         }catch(err){
-            throw Error("Problem with the request")
+            reject(err.message)
         }finally{
             if (conn) conn.release();
         }

@@ -1,35 +1,6 @@
 import BirthdayAnimationComponent from './BirthdayAnimationComponent/BirthdayAnimation';
-import React, { useState, useEffect } from 'react';
-
-
-
-
 
 function BirthdayComponent(props) {
-  const [birthdays, setBirthdays] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  
-  useEffect(() => {
-    // Fonction pour obtenir les anniversaires du jour
-    async function fetchBirthdaysOfToday() {
-      try {
-        const response = await fetch('/api/birthdays/today');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setBirthdays(data); // Stocker les anniversaires dans l'état
-      } catch (error) {
-        console.error('Error fetching birthdays:', error);
-        setError(error); // Gérer les erreurs
-      } finally {
-        setLoading(false); // Indiquer que le chargement est terminé
-      }
-    }
-
-    fetchBirthdaysOfToday();
-  }, []);
 
   let fullName = `${props.currentBirthday.firstname} ${props.currentBirthday.lastname}`;
   return (

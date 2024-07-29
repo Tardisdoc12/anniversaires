@@ -1,31 +1,36 @@
 const fs = require("fs");
 const { parse } = require("csv-parse");
 const { DateTime } = require("luxon");
+const mariadb = require("mariadb")
 
-exports.parseFile = (filename) => {
-    let results = [];
+const pool = mariadb.createPool(
+    {
+        host: '127.0.0.1', 
+        user: 'root', 
+        database: "DrawDay",
+        password: 'admin',
+        connectionLimit: 5
+});
 
-    return new Promise((resolve, reject) => {
-        fs.createReadStream(`./data/${filename}`)
-            .pipe(parse({
-                delimiter: ";",
-                columns: true,
-                bom: true,
-            }))
-            .on("data", function (row) {
-                results.push(row)
-            })
-            .on("end", function () {
-                // Utilisez Luxon pour obtenir la date actuelle
-                const today = DateTime.now();
-                // Convertissez cette date en un nombre (ex: YYYYMMDD) pour assurer l'unicité par jour
-                const dateNumber = parseInt(today.toFormat('yyyyMMdd'));
-                // Utilisez le nombre obtenu pour sélectionner une citation de manière cyclique
-                const quoteIndex = dateNumber % results.length;
-                resolve(results[quoteIndex])
-            })
-            .on("error", function (error) {
-                reject(error.message);
-            });
+exports.parseFile = async () => {
+    let data = [];
+    let conn;
+    return new Promise (async (resolve, reject) => {
+        try{
+            conn = await pool.getConnection();
+            data = await conn.query("SELECT * FROM Quotes");
+            const today = DateTime.now();
+            // Convertissez cette date en un nombre (ex: YYYYMMDD) pour assurer l'unicité par jour
+            const dateNumber = parseInt(today.toFormat('yyyyMMdd'));
+            // Utilisez le nombre obtenu pour sélectionner une citation de manière cyclique
+            const quoteIndex = dateNumber % data.length;
+            return resolve(data[quoteIndex])
+            
+        }catch(err){
+            return reject(err.message)
+        }
+
     })
+    
+
 }

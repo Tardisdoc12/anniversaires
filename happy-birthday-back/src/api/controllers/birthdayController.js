@@ -3,12 +3,12 @@ const parseService = require("../services/parseServiceBirthday");
 
 
 exports.getTodaysBirthday = async (req, res) => {
+    let result;
     const todaysDate = DateTime.now().setLocale('fr').toFormat('dd/LL');
 
-    const [result] = await parseServiceBirthday(todaysDate);
-    
+    result = await parseService.parseServiceBirthday(todaysDate);
     res.json({
-        count_total: [result].length,
+        count_total: result.length,
         students_birthday : result,
         teachers_birthday : result
     })
