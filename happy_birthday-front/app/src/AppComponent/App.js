@@ -9,6 +9,10 @@ import ConvertQuoteComponent from './QuoteConvertComponent/QuoteConvertComponent
 
 import { getTodaysBirthday } from '../services/birthdayApiService';
 import AddBirthdayForm from './addingBirthdayComponent/addingBirthday';
+import RegisterComponent from './registerComponent/register';
+import LoginComponent from './loginComponent/login';
+import ProtectedRoute from './protectedComponent/protectedPage';
+import UnauthorizedPage from './unauthorizedComponent/unauthorized';
 
 function App() {
   const colorsList = [
@@ -92,7 +96,10 @@ function App() {
         }/>
     <Route path="/convert" element={<ConvertComponent />} />
     <Route path="/convert-quote" element={<ConvertQuoteComponent />} />
-    <Route path="/add-birthday" element={<AddBirthdayForm />} />
+    <Route path="/add-birthday" element = {<ProtectedRoute  element={AddBirthdayForm}  roleRequired={0} />}/>
+    <Route path="/register" element={<RegisterComponent />} />
+    <Route path="/login" element={<LoginComponent/>} />
+    <Route path="/unauthorized" element={<UnauthorizedPage/>}/>
     </Routes>
     </Router>
   );
